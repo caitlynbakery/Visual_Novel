@@ -12,8 +12,11 @@ void main() {
 class MyGame extends FlameGame with HasTappables {
   SpriteComponent girl = SpriteComponent();
   SpriteComponent boy = SpriteComponent();
+  SpriteComponent phone = SpriteComponent();
   SpriteComponent background = SpriteComponent();
   SpriteComponent background2 = SpriteComponent();
+  SpriteComponent background3 = SpriteComponent();
+  SpriteComponent background4 = SpriteComponent();
   DialogButton dialogButton = DialogButton();
   final Vector2 buttonSize = Vector2(70.0, 70.0);
 
@@ -23,7 +26,8 @@ class MyGame extends FlameGame with HasTappables {
   int dialogLevel = 0;
   int sceneLevel = 1;
 
-  TextPaint dialogTextPaint = TextPaint(style: const TextStyle(fontSize: 25, color: Colors.white));
+  TextPaint dialogTextPaint =
+      TextPaint(style: const TextStyle(fontSize: 25, color: Colors.white));
 
   @override
   Future<void> onLoad() async {
@@ -35,6 +39,14 @@ class MyGame extends FlameGame with HasTappables {
 //background2
     background2
       ..sprite = await loadSprite('city3.jpg')
+      ..size = Vector2(size[0], size[1] - 100);
+
+    background3
+      ..sprite = await loadSprite('office.webp')
+      ..size = Vector2(size[0], size[1] - 100);
+
+    background4
+      ..sprite = await loadSprite('bakery.jpg')
       ..size = Vector2(size[0], size[1] - 100);
 
     add(background
@@ -58,6 +70,10 @@ class MyGame extends FlameGame with HasTappables {
       ..flipHorizontally();
     add(boy);
 
+    phone
+      ..sprite = await loadSprite('phone.png')
+      ..size = Vector2(50, 50);
+
     dialogButton
       ..sprite = await loadSprite('next_button.png')
       ..size = buttonSize
@@ -78,7 +94,7 @@ class MyGame extends FlameGame with HasTappables {
       }
     } else if (turnAway == false && sceneLevel == 1) {
       boy.flipHorizontally();
-      
+
       turnAway = true;
       if (dialogLevel == 2) {
         dialogLevel = 3;
@@ -114,12 +130,14 @@ class MyGame extends FlameGame with HasTappables {
     }
     switch (dialogButton.scene2Level) {
       case 1:
-      sceneLevel = 2;
+        sceneLevel = 2;
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.brown);
-        dialogTextPaint.render(canvas, 'Ken: No worries, by the way have we met before?',
+            Paint()..color = Colors.black);
+        dialogTextPaint.render(
+            canvas,
+            'Ken: No worries, by the way have we met before?',
             Vector2(10, size[1] - 80));
-        if(turnAway){
+        if (turnAway) {
           boy.flipHorizontally();
           boy.x = boy.x + 150;
           turnAway = false;
@@ -132,18 +150,71 @@ class MyGame extends FlameGame with HasTappables {
           add(girl);
         }
         break;
-          case 2:
+      case 2:
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.brown);
-        dialogTextPaint.render(canvas, 'Erika: Hrm, you look familiar as well... \n You\'re Ken right?',
+            Paint()..color = Colors.black);
+        dialogTextPaint.render(
+            canvas,
+            'Erika: Hrm, you look familiar as well... \n You\'re Ken right?',
             Vector2(10, size[1] - 80));
         break;
-        case 3:
+      case 3:
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.brown);
-        dialogTextPaint.render(canvas, 'Ken: Yea! We were childhood friends. \n I\'d love to catch up - here\'s my number!',
+            Paint()..color = Colors.black);
+        dialogTextPaint.render(
+            canvas,
+            'Ken: Yea! We were childhood friends. \n I\'d love to catch up - here\'s my number!',
+            Vector2(10, size[1] - 80));
+
+        break;
+    }
+    switch (dialogButton.scene2Level) {
+      case 4:
+        sceneLevel = 3;
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+        remove(background2);
+        remove(boy);
+        remove(girl);
+        add(background3);
+        girl.x = size.x / 2;
+        add(girl);
+        dialogTextPaint.render(
+            canvas,
+            '[thinking] That was such a suprise meeting Ken! \nI should give him a call soon.',
             Vector2(10, size[1] - 80));
         break;
+      case 5:
+      
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+            phone.x = girl.x + 30;
+            phone.y = girl.y + 50;
+        add(phone);
+        dialogTextPaint.render(canvas, '*ringing* *ringing*', Vector2(10, size[1] - 80));
+        break;
+      case 6:
+
+   canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+              dialogTextPaint.render(canvas, 'Hi Ken! Let\'s meet at Paris cafe at 4:30.', Vector2(10, size[1] - 80));  
+        break;
+    }
+    switch(dialogButton.scene2Level){
+      case 7:
+      sceneLevel = 4;
+      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+            remove(background3);
+            remove(phone);
+            remove(girl);
+            add(background4);
+            girl.x = size.x /2 - 20;
+            add(girl);
+            add(boy);
+              dialogTextPaint.render(canvas, 'Ken: Thanks for the invite! Do you want to get dinner?', Vector2(10, size[1] - 80));  
+            break;
+
     }
   }
 }
