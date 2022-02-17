@@ -17,12 +17,14 @@ class MyGame extends FlameGame with HasTappables {
   SpriteComponent background2 = SpriteComponent();
   SpriteComponent background3 = SpriteComponent();
   SpriteComponent background4 = SpriteComponent();
+  SpriteComponent ring = SpriteComponent();
   DialogButton dialogButton = DialogButton();
   final Vector2 buttonSize = Vector2(70.0, 70.0);
 
   final double girlSize = 200;
   final double boySize = 220;
   bool turnAway = false;
+  bool girlTurnAway = false;
   int dialogLevel = 0;
   int sceneLevel = 1;
 
@@ -72,6 +74,10 @@ class MyGame extends FlameGame with HasTappables {
 
     phone
       ..sprite = await loadSprite('phone.png')
+      ..size = Vector2(50, 50);
+
+    ring
+      ..sprite = await loadSprite('ring.png')
       ..size = Vector2(50, 50);
 
     dialogButton
@@ -213,6 +219,30 @@ class MyGame extends FlameGame with HasTappables {
             add(girl);
             add(boy);
               dialogTextPaint.render(canvas, 'Ken: Thanks for the invite! Do you want to get dinner?', Vector2(10, size[1] - 80));  
+            break;
+      case 8:
+       canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+            girl.x = size.x/2 - 100;
+            if(girlTurnAway == false){
+              girl.flipHorizontally();
+              girlTurnAway = true;
+            }
+            ring.x = girl.x + 20;
+            ring.y = girl.y + 50;
+            add(ring);
+            dialogTextPaint.render(canvas, 'Erika: Ah, sorry. I\'m actually engaged.', Vector2(10, size[1] - 80));
+            break;
+      case 9:
+      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+            dialogTextPaint.render(canvas, 'Ken: Do you love the guy?', Vector2(10, size[1] - 80));  
+            break;
+      case 10:
+            canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Colors.black);
+            remove(ring);
+dialogTextPaint.render(canvas, 'Erika: It\'s an arranged marriage...', Vector2(10, size[1] - 80));  
             break;
 
     }
