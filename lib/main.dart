@@ -29,8 +29,14 @@ class MyGame extends FlameGame with HasTappables {
   int sceneLevel = 1;
 
   TextPaint dialogTextPaint =
-      TextPaint(style: const TextStyle(fontSize: 25, color: Colors.white));
+      TextPaint(style: const TextStyle(fontSize: 25, color: Colors.black));
 
+      TextPaint finalPaint = TextPaint(style: const TextStyle(fontSize: 30, color: Colors.black));
+
+  @override
+  Color backgroundColor() {
+    return const Color(0xFFd6a88a);
+  }
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -117,18 +123,24 @@ class MyGame extends FlameGame with HasTappables {
     super.render(canvas);
     switch (dialogLevel) {
       case 1:
+      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0], 100),
+            Paint()..color =  Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Erika [thinking]: I\'m late for my meeting presentation!',
             Vector2(10, size[1] - 80));
         break;
       case 2:
+      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0], 100),
+            Paint()..color =  Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Ken [thinking]: I need to hurry to work!',
             Vector2(10, size[1] - 80));
         break;
       case 3:
+      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color =  Color(0xFFd6a88a));
         dialogTextPaint.render(canvas, 'Erika: Oh! Sorry I bumped into you.',
             Vector2(10, size[1] - 80));
         add(dialogButton);
@@ -138,7 +150,7 @@ class MyGame extends FlameGame with HasTappables {
       case 1:
         sceneLevel = 2;
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color = Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Ken: No worries, by the way have we met before?',
@@ -158,7 +170,7 @@ class MyGame extends FlameGame with HasTappables {
         break;
       case 2:
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Erika: Hrm, you look familiar as well... \n You\'re Ken right?',
@@ -166,7 +178,7 @@ class MyGame extends FlameGame with HasTappables {
         break;
       case 3:
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Ken: Yea! We were childhood friends. \n I\'d love to catch up - here\'s my number!',
@@ -178,7 +190,7 @@ class MyGame extends FlameGame with HasTappables {
       case 4:
         sceneLevel = 3;
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
         remove(background2);
         remove(boy);
         remove(girl);
@@ -193,7 +205,7 @@ class MyGame extends FlameGame with HasTappables {
       case 5:
       
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
             phone.x = girl.x + 30;
             phone.y = girl.y + 50;
         add(phone);
@@ -202,7 +214,7 @@ class MyGame extends FlameGame with HasTappables {
       case 6:
 
    canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
               dialogTextPaint.render(canvas, 'Hi Ken! Let\'s meet at Paris cafe at 4:30.', Vector2(10, size[1] - 80));  
         break;
     }
@@ -210,7 +222,7 @@ class MyGame extends FlameGame with HasTappables {
       case 7:
       sceneLevel = 4;
       canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
             remove(background3);
             remove(phone);
             remove(girl);
@@ -222,7 +234,7 @@ class MyGame extends FlameGame with HasTappables {
             break;
       case 8:
        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
             girl.x = size.x/2 - 100;
             if(girlTurnAway == false){
               girl.flipHorizontally();
@@ -235,15 +247,23 @@ class MyGame extends FlameGame with HasTappables {
             break;
       case 9:
       canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
             dialogTextPaint.render(canvas, 'Ken: Do you love the guy?', Vector2(10, size[1] - 80));  
             break;
       case 10:
             canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color = Colors.black);
+            Paint()..color =  Color(0xFFd6a88a));
             remove(ring);
 dialogTextPaint.render(canvas, 'Erika: It\'s an arranged marriage...', Vector2(10, size[1] - 80));  
             break;
+      case 11:
+      remove(background4);
+    
+ canvas.drawRect(Rect.fromLTWH(0, size[1] - 101, size[0], 101),
+            Paint()..color = Color(0xFFd6a88a));
+            
+                        finalPaint.render(canvas, 'To be continued', Vector2(250, size[1] -80));  
+
 
     }
   }
@@ -255,8 +275,11 @@ class DialogButton extends SpriteComponent with Tappable {
   bool onTapDown(TapDownInfo event) {
     try {
       print('we will move to the next screen');
-      scene2Level++;
-      return true;
+           if(scene2Level < 11 ){
+scene2Level++;
+      
+           }return true;
+ 
     } catch (error) {
       print(error);
       return false;
