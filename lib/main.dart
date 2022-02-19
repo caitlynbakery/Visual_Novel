@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame/game.dart';
 
 void main() {
@@ -28,21 +29,27 @@ class MyGame extends FlameGame with HasTappables {
   int dialogLevel = 0;
   int sceneLevel = 1;
 
+  bool musicPlaying = false;
+
   TextPaint dialogTextPaint =
       TextPaint(style: const TextStyle(fontSize: 25, color: Colors.black));
 
-      TextPaint finalPaint = TextPaint(style: const TextStyle(fontSize: 30, color: Colors.black));
+  TextPaint finalPaint =
+      TextPaint(style: const TextStyle(fontSize: 30, color: Colors.black));
 
   @override
   Color backgroundColor() {
     return const Color(0xFFd6a88a);
   }
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
     final screenWidth = size[0];
     final screenHeight = size[1];
     final textBoxHeight = 100;
+
+    FlameAudio.bgm.initialize();
 
 //background2
     background2
@@ -123,24 +130,29 @@ class MyGame extends FlameGame with HasTappables {
     super.render(canvas);
     switch (dialogLevel) {
       case 1:
-      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0], 100),
-            Paint()..color =  Color(0xFFd6a88a));
+        if (!musicPlaying) {
+          FlameAudio.bgm.play('track1.mp3');
+          musicPlaying = true;
+        }
+
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0], 100),
+            Paint()..color = Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Erika [thinking]: I\'m late for my meeting presentation!',
             Vector2(10, size[1] - 80));
         break;
       case 2:
-      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0], 100),
-            Paint()..color =  Color(0xFFd6a88a));
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0], 100),
+            Paint()..color = Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Ken [thinking]: I need to hurry to work!',
             Vector2(10, size[1] - 80));
         break;
       case 3:
-      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Color(0xFFd6a88a));
         dialogTextPaint.render(canvas, 'Erika: Oh! Sorry I bumped into you.',
             Vector2(10, size[1] - 80));
         add(dialogButton);
@@ -170,7 +182,7 @@ class MyGame extends FlameGame with HasTappables {
         break;
       case 2:
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
+            Paint()..color = Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Erika: Hrm, you look familiar as well... \n You\'re Ken right?',
@@ -178,7 +190,7 @@ class MyGame extends FlameGame with HasTappables {
         break;
       case 3:
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
+            Paint()..color = Color(0xFFd6a88a));
         dialogTextPaint.render(
             canvas,
             'Ken: Yea! We were childhood friends. \n I\'d love to catch up - here\'s my number!',
@@ -190,7 +202,7 @@ class MyGame extends FlameGame with HasTappables {
       case 4:
         sceneLevel = 3;
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
+            Paint()..color = Color(0xFFd6a88a));
         remove(background2);
         remove(boy);
         remove(girl);
@@ -203,68 +215,90 @@ class MyGame extends FlameGame with HasTappables {
             Vector2(10, size[1] - 80));
         break;
       case 5:
-      
         canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
-            phone.x = girl.x + 30;
-            phone.y = girl.y + 50;
+            Paint()..color = Color(0xFFd6a88a));
+        phone.x = girl.x + 30;
+        phone.y = girl.y + 50;
         add(phone);
-        dialogTextPaint.render(canvas, '*ringing* *ringing*', Vector2(10, size[1] - 80));
+        dialogTextPaint.render(
+            canvas, '*ringing* *ringing*', Vector2(10, size[1] - 80));
         break;
       case 6:
-
-   canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
-              dialogTextPaint.render(canvas, 'Hi Ken! Let\'s meet at Paris cafe at 4:30.', Vector2(10, size[1] - 80));  
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Color(0xFFd6a88a));
+        dialogTextPaint.render(
+            canvas,
+            'Hi Ken! Let\'s meet at Paris cafe at 4:30.',
+            Vector2(10, size[1] - 80));
         break;
     }
-    switch(dialogButton.scene2Level){
+    switch (dialogButton.scene2Level) {
       case 7:
-      sceneLevel = 4;
-      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
-            remove(background3);
-            remove(phone);
-            remove(girl);
-            add(background4);
-            girl.x = size.x /2 - 20;
-            add(girl);
-            add(boy);
-              dialogTextPaint.render(canvas, 'Ken: Thanks for the invite! Do you want to get dinner?', Vector2(10, size[1] - 80));  
-            break;
-      case 8:
-       canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
-            girl.x = size.x/2 - 100;
-            if(girlTurnAway == false){
-              girl.flipHorizontally();
-              girlTurnAway = true;
-            }
-            ring.x = girl.x + 20;
-            ring.y = girl.y + 50;
-            add(ring);
-            dialogTextPaint.render(canvas, 'Erika: Ah, sorry. I\'m actually engaged.', Vector2(10, size[1] - 80));
-            break;
-      case 9:
-      canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
-            dialogTextPaint.render(canvas, 'Ken: Do you love the guy?', Vector2(10, size[1] - 80));  
-            break;
-      case 10:
-            canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
-            Paint()..color =  Color(0xFFd6a88a));
-            remove(ring);
-dialogTextPaint.render(canvas, 'Erika: It\'s an arranged marriage...', Vector2(10, size[1] - 80));  
-            break;
-      case 11:
-      remove(background4);
-    
- canvas.drawRect(Rect.fromLTWH(0, size[1] - 101, size[0], 101),
+        sceneLevel = 4;
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
             Paint()..color = Color(0xFFd6a88a));
-            
-                        finalPaint.render(canvas, 'To be continued', Vector2(250, size[1] -80));  
+        remove(background3);
+        remove(phone);
+        remove(girl);
+        add(background4);
+        girl.x = size.x / 2 - 20;
+        add(girl);
+        add(boy);
+      
 
+    //     if (!musicPlaying) {
+    //       if (!FlameAudio.bgm.isPlaying) {
+    //  FlameAudio.bgm.play('track2.mp3');
+    //       musicPlaying = true;
+    //       }
+     
+    //     }
+        dialogTextPaint.render(
+            canvas,
+            'Ken: Thanks for the invite! Do you want to get dinner?',
+            Vector2(10, size[1] - 80));
+        break;
+      case 8:
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Color(0xFFd6a88a));
+        girl.x = size.x / 2 - 100;
+        if (girlTurnAway == false) {
+          girl.flipHorizontally();
+          girlTurnAway = true;
+        }
+        ring.x = girl.x + 20;
+        ring.y = girl.y + 50;
+        add(ring);
+        dialogTextPaint.render(
+            canvas,
+            'Erika: Ah, sorry. I\'m actually engaged.',
+            Vector2(10, size[1] - 80));
+        break;
+      case 9:
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Color(0xFFd6a88a));
+        dialogTextPaint.render(
+            canvas, 'Ken: Do you love the guy?', Vector2(10, size[1] - 80));
+        break;
+      case 10:
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 100, size[0] - 90, 100),
+            Paint()..color = Color(0xFFd6a88a));
+        remove(ring);
+        dialogTextPaint.render(canvas, 'Erika: It\'s an arranged marriage...',
+            Vector2(10, size[1] - 80));
+        break;
+      case 11:
+        remove(background4);
 
+        canvas.drawRect(Rect.fromLTWH(0, size[1] - 101, size[0], 101),
+            Paint()..color = Color(0xFFd6a88a));
+
+        finalPaint.render(
+            canvas, 'To be continued', Vector2(250, size[1] - 80));
+   if (musicPlaying) {
+          FlameAudio.bgm.stop();
+          musicPlaying = false;
+        }
     }
   }
 }
@@ -275,11 +309,10 @@ class DialogButton extends SpriteComponent with Tappable {
   bool onTapDown(TapDownInfo event) {
     try {
       print('we will move to the next screen');
-           if(scene2Level < 11 ){
-scene2Level++;
-      
-           }return true;
- 
+      if (scene2Level < 11) {
+        scene2Level++;
+      }
+      return true;
     } catch (error) {
       print(error);
       return false;
